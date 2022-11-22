@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -31,6 +31,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Form from './pages/Form';
+import Index from './pages/Index';
 
 setupIonicReact();
 
@@ -43,13 +44,13 @@ const App: React.FC = () => (
             <Form />
           </Route>
           <Route exact path="/">
-            <Redirect to="/form" />
+            <Index />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="form" href="/form">
+          <IonTabButton tab="beranda" href="/">
             <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+            <IonLabel>Beranda</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
