@@ -20,8 +20,8 @@ const Form: React.FC = () => {
 
   const [present] = useIonToast();
 
-  const [kodeRuangan, setKodeRuangan] = useState<string | null>();
-  const [kodeRuanganValid, setKodeRuanganValid] = useState(true);
+  const [kode, setKode] = useState<string | null>();
+  const [kodeValid, setKodeValid] = useState(true);
 
   const [kapasitas, setKapasitas] = useState<number | null>();
   const [kapasitasValid, setKapasitasValid] = useState(true);
@@ -30,10 +30,10 @@ const Form: React.FC = () => {
   const [keteranganValid, setKeteranganValid] = useState(true);
 
   const onSubmit = () => {
-    if (kodeRuangan === null) {
-      setKodeRuanganValid(false);
+    if (kode === null) {
+      setKodeValid(false);
     } else {
-      setKodeRuanganValid(true);
+      setKodeValid(true);
     }
 
     if (kapasitas === null) {
@@ -48,12 +48,12 @@ const Form: React.FC = () => {
       setKeteranganValid(true);
     }
 
-    if (kodeRuanganValid && kapasitasValid && keteranganValid) {
+    if (kodeValid && kapasitasValid && keteranganValid) {
       supabase
         .from("ruangan")
         .insert([
           {
-            kode: kodeRuangan,
+            kode: kode,
             kapasitas: kapasitas,
             keterangan: keterangan,
           },
@@ -73,10 +73,10 @@ const Form: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          <IonItem className={`${!kodeRuanganValid && "ion-invalid"}`}>
+          <IonItem className={`${!kodeValid && "ion-invalid"}`}>
             <IonLabel position="stacked">Kode Ruangan</IonLabel>
             <IonInput
-              onIonChange={(e) => setKodeRuangan(e.detail.value!)}
+              onIonChange={(e) => setKode(e.detail.value!)}
               placeholder="A203"
             ></IonInput>
             <IonNote slot="error">Wajib Diisi</IonNote>
