@@ -17,16 +17,15 @@ import supabase from "../supabase/supabaseClient";
 import "./Form.css";
 
 const Form: React.FC = () => {
-
   const [present] = useIonToast();
 
-  const [kode, setKode] = useState<string | null>();
+  const [kode, setKode] = useState<string | null>(null);
   const [kodeValid, setKodeValid] = useState(true);
 
-  const [kapasitas, setKapasitas] = useState<number | null>();
+  const [kapasitas, setKapasitas] = useState<string| null>(null);
   const [kapasitasValid, setKapasitasValid] = useState(true);
 
-  const [keterangan, setKeterangan] = useState<string | null>();
+  const [keterangan, setKeterangan] = useState<string | null>(null);
   const [keteranganValid, setKeteranganValid] = useState(true);
 
   const onSubmit = () => {
@@ -54,12 +53,25 @@ const Form: React.FC = () => {
         .insert([
           {
             kode: kode,
-            kapasitas: kapasitas,
+            kapasitas: parseInt(kapasitas as string),
             keterangan: keterangan,
           },
         ])
-        .then(() => {
-          present("Data berhasil disimpan", 1500);
+        .then((response) => {
+          if (response.error) {
+            present({
+              message: response.error.message,
+              duration: 2000,
+            });
+          } else {
+            present("Data berhasil disimpan", 1500);
+            setKode(null);
+            setKapasitas(null);
+            setKeterangan(null);
+            setKodeValid(true);
+            setKapasitasValid(true);
+            setKeteranganValid(true);
+          }
         });
     }
   };
@@ -76,6 +88,7 @@ const Form: React.FC = () => {
           <IonItem className={`${!kodeValid && "ion-invalid"}`}>
             <IonLabel position="stacked">Kode Ruangan</IonLabel>
             <IonInput
+              value={kode}
               onIonChange={(e) => setKode(e.detail.value!)}
               placeholder="A203"
             ></IonInput>
@@ -84,7 +97,9 @@ const Form: React.FC = () => {
           <IonItem className={`${!kapasitasValid && "ion-invalid"}`}>
             <IonLabel position="stacked">Kapasitas</IonLabel>
             <IonInput
-              onIonChange={(e) => setKapasitas(parseInt(e.detail.value!))}
+              value={kapasitas}
+              type="number"
+              onIonChange={(e) => setKapasitas(e.detail.value!)}
               placeholder="99"
             ></IonInput>
             <IonNote slot="error">Wajib Diisi</IonNote>
@@ -92,6 +107,7 @@ const Form: React.FC = () => {
           <IonItem className={`${!keteranganValid && "ion-invalid"}`}>
             <IonLabel position="stacked">Keterangan</IonLabel>
             <IonInput
+              value={keterangan}
               onIonChange={(e) => setKeterangan(e.detail.value!)}
               placeholder="Ruang Kelas/Ruang Pertemuan/Kantor"
             ></IonInput>
