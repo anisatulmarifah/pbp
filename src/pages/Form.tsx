@@ -22,11 +22,20 @@ const Form: React.FC = () => {
   const [kode, setKode] = useState<string | null>(null);
   const [kodeValid, setKodeValid] = useState(true);
 
-  const [kapasitas, setKapasitas] = useState<string| null>(null);
+  const [kapasitas, setKapasitas] = useState<string | null>(null);
   const [kapasitasValid, setKapasitasValid] = useState(true);
 
   const [keterangan, setKeterangan] = useState<string | null>(null);
   const [keteranganValid, setKeteranganValid] = useState(true);
+
+  const resetState = () => {
+    setKode(null);
+    setKapasitas(null);
+    setKeterangan(null);
+    setKodeValid(true);
+    setKapasitasValid(true);
+    setKeteranganValid(true);
+  };
 
   const onSubmit = () => {
     if (kode === null) {
@@ -49,28 +58,27 @@ const Form: React.FC = () => {
 
     if (kodeValid && kapasitasValid && keteranganValid) {
       supabase
-        .from("ruangan")
+        .from("ruangan") // nama table
         .insert([
+          // insert data
           {
             kode: kode,
-            kapasitas: parseInt(kapasitas as string),
+            kapasitas: parseInt(kapasitas!), // mengubah string ke number, tanda ! memastikan data tidak null
             keterangan: keterangan,
           },
         ])
         .then((response) => {
+          // apa responsenya
           if (response.error) {
+            // jika response.error ada, beri pesan ke pengguna
             present({
               message: response.error.message,
               duration: 2000,
             });
           } else {
+            // jika tidak ada, beri pesan ke pengguna bahwa data berhasil disimpan dan reset form
             present("Data berhasil disimpan", 1500);
-            setKode(null);
-            setKapasitas(null);
-            setKeterangan(null);
-            setKodeValid(true);
-            setKapasitasValid(true);
-            setKeteranganValid(true);
+            resetState();
           }
         });
     }
@@ -85,6 +93,7 @@ const Form: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
+          {/* Class ion-invalid akan membuat text pada IonNote terlihat. Class ini hanya ditambahkan apabila kode tidak valid */}
           <IonItem className={`${!kodeValid && "ion-invalid"}`}>
             <IonLabel position="stacked">Kode Ruangan</IonLabel>
             <IonInput
