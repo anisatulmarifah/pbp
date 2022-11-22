@@ -1,0 +1,8 @@
+{
+  "name": "PBP",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "8a9603b9"
+}
