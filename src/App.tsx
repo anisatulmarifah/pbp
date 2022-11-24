@@ -46,11 +46,18 @@ const App: React.FC = () => (
           <Route exact path="/">
             <Index />
           </Route>
+          <Route exact path="/">
+            <Index />
+          </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="beranda" href="/">
             <IonIcon icon={triangle} />
             <IonLabel>Beranda</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="daftarRuangan" href="/">
+            <IonIcon icon={triangle} />
+            <IonLabel>daftar ruangan</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
